@@ -259,7 +259,11 @@
       display: flex; align-items: center; justify-content: center;
       background: var(--surf); border: 1px solid var(--bdr);
     }
-    .card-name { font-family: var(--fd); font-size: 1.15rem; font-weight: 700; line-height: 1.2; word-break: break-word; }
+    .card-name {
+      font-family: var(--fd); font-size: 1.45rem; font-weight: 700;
+      line-height: 1.15; word-break: break-word;
+      text-transform: uppercase; letter-spacing: .01em;
+    }
     .card-badge {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
@@ -377,7 +381,7 @@
     .car-desc {
       font-size: .8rem; color: var(--text); opacity: .82;
       font-weight: 500; line-height: 1.6;
-      min-height: 60px;
+      min-height: 42px;
     }
     .car-desc b { color: var(--text); opacity: 1; font-weight: 700; }
 
@@ -498,13 +502,7 @@
       padding: 15px 20px; cursor: pointer;
     }
 
-    footer { text-align: center; padding: 12px 0 4px; font-size: .72rem; font-weight: 600; letter-spacing: .04em; }
-    footer .brand {
-      background: linear-gradient(115deg, var(--teal), var(--blue), var(--purple));
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
-    }
-    footer .rest { color: var(--muted); opacity: .55; }
+    
   </style>
 </head>
 <body>
@@ -569,7 +567,7 @@
   </div>
 
   <div id="content"></div>
-  <footer><span class="brand">William Fasting App</span> <span class="rest">· Built for you.</span></footer>
+
 </div>
 
 <script>
@@ -580,21 +578,21 @@ var KEY = 'wfa_v4';
 /* Full ketosis & fat-burning stage guide */
 var STAGES = [
   { h:0,   e:'🏁', name:'The Journey Begins', when:'Hour 0',
-    desc:'Your body is running on glucose from your last meal. Insulin is elevated and fat burning is paused. <b>What to do:</b> hydrate well and keep carbs low so the switch can begin.' },
+    desc:'Running on glucose. <b>Keep carbs low</b> and hydrate — the switch begins now.' },
   { h:12,  e:'🌱', name:'Glycogen Depletion', when:'~12 hours in',
-    desc:'Liver glycogen (stored sugar) is running low. Insulin drops and your body starts releasing fatty acids from fat stores. <b>You may feel:</b> slight hunger waves — they pass. Drink water with a pinch of salt.' },
-  { h:24,  e:'🔥', name:'Fat Burning Switches On', when:'~24 hours in',
-    desc:'Glycogen is nearly gone. Your liver begins converting fat into <b>ketones</b> — an alternative fuel for your brain and muscles. <b>You may feel:</b> a temporary energy dip ("keto flu"). Electrolytes (sodium, potassium, magnesium) fix most of it.' },
+    desc:'Stored sugar is running out. Fat starts releasing. <b>Water + a pinch of salt</b> helps.' },
+  { h:24,  e:'🔥', name:'Fat Burning On', when:'~24 hours in',
+    desc:'Your liver is now making <b>ketones</b> from fat. Energy may dip briefly — electrolytes fix it.' },
   { h:48,  e:'⚡', name:'Ketosis Begins', when:'~2 days in',
-    desc:'Blood ketones reach 0.5–1.5 mmol/L — you are officially in <b>light ketosis</b>. Hunger hormones start to regulate and appetite drops. <b>You may notice:</b> fruity breath and clearer thinking.' },
+    desc:'Officially in <b>light ketosis</b>. Appetite drops, thinking gets clearer.' },
   { h:72,  e:'🧠', name:'Deep Ketosis', when:'~3 days in',
-    desc:'Ketones (1.5–3 mmol/L) are now your brain\'s main fuel. Most people report a "second wind" — steady energy with no crashes, sharper focus, and noticeably less hunger.' },
+    desc:'Ketones fuel your brain. <b>Steady energy</b>, sharp focus, little hunger.' },
   { h:168, e:'🏆', name:'Fat Adapted', when:'~7 days in',
-    desc:'Your metabolism has restructured to run efficiently on fat. Mitochondria multiply in muscle cells, endurance improves, and energy stays stable all day. This is the state athletes chase.' },
+    desc:'Your body runs efficiently on fat. <b>All-day stable energy.</b>' },
   { h:336, e:'✨', name:'Two-Week Milestone', when:'~14 days in',
-    desc:'Insulin sensitivity is markedly improved and inflammation markers typically drop. Many people see significant weight loss, better sleep quality, and stable moods by this point.' },
+    desc:'<b>Better insulin sensitivity</b>, less inflammation, better sleep.' },
   { h:720, e:'🌟', name:'Full Transformation', when:'~30 days in',
-    desc:'Complete metabolic adaptation. Your body fluidly switches between fuels, cholesterol profiles often improve, and the low-carb lifestyle now feels natural rather than effortful. Incredible work.' }
+    desc:'Complete adaptation. The lifestyle now feels <b>natural</b>. Incredible work.' }
 ];
 
 var acts = [];
@@ -760,7 +758,7 @@ function celebrate(actId) {
 }
 
 /* ───── STAGE CAROUSEL ENGINE ───── */
-var AUTO_MS = 12000;                /* each stage shows for 12 seconds — comfortable reading pace */
+var AUTO_MS = 18000;                /* each stage shows for 18 seconds — very relaxed pace */
 var carState = {};                  /* per-activity: { idx, timer } */
 
 function carSetup(actId, startIdx) {
@@ -1003,13 +1001,7 @@ function buildCard(a, now) {
     '<div class="card-accent" style="background:linear-gradient(90deg,' + color + ',#FFB347,#A78BFA,' + color + ')"></div>' +
     '<div class="card-top">' +
       '<div class="card-left">' +
-        '<div class="card-emoji">' + (a.emoji || '🎯') + '</div>' +
-        '<div>' +
-          '<div class="card-name">' + name + '</div>' +
-          '<div class="card-badge" style="background:' + pBg + ';color:' + color + '">' +
-            '<span class="bdot" style="background:' + color + '"></span>' + phase +
-          '</div>' +
-        '</div>' +
+        '<div class="card-name" style="background:linear-gradient(115deg,' + color + ',#FFAD33,' + color + ');-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">' + name + ' 💪</div>' +
       '</div>' +
       '<div class="card-btns">' +
         '<button class="ibtn" onclick="openModal(\'' + a.id + '\')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' +
