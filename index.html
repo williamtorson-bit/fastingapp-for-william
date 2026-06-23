@@ -425,32 +425,70 @@
     /* ───── ACTIVITY CARD ───── */
     .list { display: flex; flex-direction: column; gap: 18px; }
 
-    /* ───── HISTORY ───── */
+    /* ───── COLLAPSED HISTORY ───── */
+    .history-wrap {
+      margin-top: 16px;
+      width: 100%;
+    }
+    .history-toggle {
+      list-style: none;
+      width: max-content;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(0,229,176,.16), rgba(94,177,255,.12));
+      color: var(--text);
+      font-family: var(--fb);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+      padding: 8px 18px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 10px 26px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.08);
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .history-toggle::-webkit-details-marker { display: none; }
+    .history-toggle::marker { content: ''; }
+    .history-toggle:active { transform: scale(.96); }
+    .history-wrap[open] .history-toggle {
+      margin-bottom: 12px;
+      border-color: rgba(0,229,176,.36);
+      box-shadow: 0 12px 34px rgba(0,229,176,.14), inset 0 1px 0 rgba(255,255,255,.1);
+    }
     .history-panel {
-      margin-top: 18px;
       background: linear-gradient(180deg, var(--card2), var(--card));
       border: 1px solid var(--bdr);
-      border-radius: 24px;
+      border-radius: 22px;
       padding: 14px;
-      box-shadow: 0 8px 40px rgba(0,0,0,.24);
+      box-shadow: 0 8px 36px rgba(0,0,0,.24);
+      animation: historyReveal .18s ease-out;
+    }
+    @keyframes historyReveal {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .history-head {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
       padding: 2px 2px 12px;
       border-bottom: 1px dashed var(--bdr);
     }
-    .history-title { font-family: var(--fd); font-size: 1.18rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .history-title { font-family: var(--fd); font-size: 1.06rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .history-count {
-      font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
+      font-size: .6rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
       color: var(--teal); background: rgba(0,229,176,.12); border: 1px solid rgba(0,229,176,.28);
       padding: 5px 9px; border-radius: 999px; white-space: nowrap;
     }
-    .history-sub { color: var(--muted); font-size: .78rem; line-height: 1.55; margin: 10px 2px 0; }
     .history-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     .history-card {
       position: relative; overflow: hidden;
-      background: var(--surf); border: 1px solid var(--bdr); border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+      border: 1px solid var(--bdr); border-radius: 16px;
       padding: 11px 12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
     }
     .history-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
     .history-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding-left: 6px; }
@@ -1152,7 +1190,7 @@ function renderAll() {
       '<div class="empty">' +
         '<div class="empty-icon">✅</div>' +
         '<h2>No Active Activities</h2>' +
-        '<p>Completed activities have been moved out of the main panel and saved in History below.</p>' +
+        '<p>Tap the History button below to view your completed activities.</p>' +
       '</div>';
   }
 
@@ -1178,15 +1216,16 @@ function renderAll() {
 
 function buildHistorySection(items) {
   var html =
-    '<div class="history-panel" id="activity-history">' +
-      '<div class="history-head">' +
-        '<div class="history-title">📜 History</div>' +
-        '<div class="history-count">' + items.length + ' completed</div>' +
-      '</div>' +
-      '<div class="history-sub">Finished activities are kept here, so your main panel only shows activities that are still active or upcoming.</div>' +
-      '<div class="history-list">';
+    '<details class="history-wrap" id="activity-history">' +
+      '<summary class="history-toggle">History</summary>' +
+      '<div class="history-panel">' +
+        '<div class="history-head">' +
+          '<div class="history-title">Completed activities</div>' +
+          '<div class="history-count">' + items.length + ' completed</div>' +
+        '</div>' +
+        '<div class="history-list">';
   for (var i = 0; i < items.length; i++) html += buildHistoryCard(items[i]);
-  html += '</div></div>';
+  html += '</div></div></details>';
   return html;
 }
 
